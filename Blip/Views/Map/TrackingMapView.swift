@@ -6,6 +6,8 @@ struct TrackingMapView: View {
     @Environment(MapInteractionState.self) var mapState
     @Environment(AppCoordinator.self) var coordinator
 
+    @State private var detailTarget: Target?
+
     var body: some View {
         @Bindable var mapState = mapState
 
@@ -20,7 +22,7 @@ struct TrackingMapView: View {
                     ) {
                         TargetAnnotationView(target: target)
                             .onTapGesture {
-                                store.selectedTargetID = target.id
+                                detailTarget = target
                             }
                     }
                     .annotationTitles(.hidden)
@@ -37,10 +39,7 @@ struct TrackingMapView: View {
                 coordinator.updateRegion(center: center, radiusNM: radius, store: store)
             }
         }
-        .sheet(item: Binding(
-            get: { store.selectedTarget },
-            set: { _ in store.selectedTargetID = nil }
-        )) { target in
+        .sheet(item: $detailTarget) { target in
             TargetDetailView(target: target)
                 .presentationDetents([.medium, .large])
         }
