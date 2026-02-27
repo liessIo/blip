@@ -1,0 +1,32 @@
+# === Xcode ===
+build/
+DerivedData/
+*.xcuserdata
+*.xcworkspace
+*.xcodeproj/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# === Generated (XcodeGen regenerates from project.yml) ===
+*.xcodeproj
+
+# === macOS ===
+.DS_Store
+*.swp
+*~
+
+# === Secrets ===
+*.env
+Secrets/
+
+# === Swift Package Manager ===
+.build/
+Package.resolved

@@ -1,0 +1,97 @@
+name: Blip
+options:
+  bundleIdPrefix: io.liess.blip
+  deploymentTarget:
+    iOS: "26.0"
+    macOS: "26.0"
+  createIntermediateGroups: true
+  defaultConfig: Debug
+  groupSortPosition: top
+
+settings:
+  base:
+    SWIFT_VERSION: "6.2"
+    SWIFT_DEFAULT_ACTOR_ISOLATION: MainActor
+    SWIFT_APPROACHABLE_CONCURRENCY: "YES"
+    ENABLE_USER_SCRIPT_SANDBOXING: "YES"
+    CODE_SIGN_IDENTITY: ""
+    CODE_SIGNING_REQUIRED: "NO"
+    CODE_SIGNING_ALLOWED: "NO"
+  configs:
+    Debug:
+      SWIFT_OPTIMIZATION_LEVEL: "-Onone"
+      SWIFT_ACTIVE_COMPILATION_CONDITIONS: "DEBUG"
+    Release:
+      SWIFT_OPTIMIZATION_LEVEL: "-O"
+      SWIFT_COMPILATION_MODE: "wholemodule"
+
+configs:
+  Debug: debug
+  Release: release
+
+targets:
+  Blip:
+    type: application
+    platform: macOS
+    sources:
+      - path: Blip
+        createIntermediateGroups: true
+    settings:
+      base:
+        INFOPLIST_KEY_NSLocationWhenInUseUsageDescription: "Blip uses your location to show nearby aircraft and ships."
+        PRODUCT_BUNDLE_IDENTIFIER: "io.liess.blip"
+        PRODUCT_NAME: "Blip"
+        GENERATE_INFOPLIST_FILE: "YES"
+        ASSETCATALOG_COMPILER_APPICON_NAME: "AppIcon"
+        MACOSX_DEPLOYMENT_TARGET: "26.0"
+    dependencies: []
+
+  BlipTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - path: BlipTests
+        createIntermediateGroups: true
+    dependencies:
+      - target: Blip
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: "io.liess.blip.tests"
+        GENERATE_INFOPLIST_FILE: "YES"
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/Blip.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Blip"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+
+  BlipUITests:
+    type: bundle.ui-testing
+    platform: macOS
+    sources:
+      - path: BlipUITests
+        createIntermediateGroups: true
+    dependencies:
+      - target: Blip
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: "io.liess.blip.uitests"
+        GENERATE_INFOPLIST_FILE: "YES"
+        TEST_TARGET_NAME: "Blip"
+
+schemes:
+  Blip:
+    build:
+      targets:
+        Blip: all
+        BlipTests: [test]
+        BlipUITests: [test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - BlipTests
+        - BlipUITests
+    profile:
+      config: Release
+    analyze:
+      config: Debug
+    archive:
+      config: Release
